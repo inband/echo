@@ -1,6 +1,8 @@
 import sys
 import socket
-import threading
+import os
+#import threading
+
 
 host = ''
 port = 7
@@ -21,7 +23,7 @@ except:
 #listen for connection
 s.listen(5)
 
-def client_thread(conn, addr):
+def client_child(conn, addr):
     q = b'quit\r\n'
     #conn, addr = accept
     print('Client connected: {}'.format(addr))
@@ -40,19 +42,17 @@ def client_thread(conn, addr):
 
 
 while True:
-    threads = list()
+    #threads = list()
     conn, addr = s.accept()
     #t = threading.Thread(target=client_thread(conn, addr))
-    t = threading.Thread(target=client_thread, args=(conn, addr,))
-    print(t)
-    threads.append(t)
-    t.start()
-                
-print(conn)
-print(addr)
+    #t = threading.Thread(target=client_thread, args=(conn, addr,))
+    #print(t)
+    #threads.append(t)
+    #t.start()
+    pid = os.fork()
+    if pid == 0:
+        client_child(conn, addr)
 
-#s.shutdown(socket.SHUT_RDWR)
-#s.close()
 
 
 
