@@ -15,6 +15,7 @@ s = socket.socket(address_family, transport_protocol)
 
 #bind to socket
 try:
+    s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     s.bind((host,port))
 except:
     #OSError: [Errno 98] Address already in use
