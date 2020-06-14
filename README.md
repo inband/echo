@@ -5,5 +5,3 @@
 Python implementation TCP based echo server.  Sends back data it receives from source.
 
 * tcp port 7
-
-
