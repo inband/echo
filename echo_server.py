@@ -23,17 +23,34 @@ except:
 #listen for connection
 s.listen(5)
 
-def client_child(conn, addr):
+def help():
+    return b'Use quit or quit() to exit\r\n'
+
+def quit(data):
     q = b'quit\r\n'
+    q_brackets = b'quit()\r\n'
+    if data == q:
+        return True
+    elif data == q_brackets:
+        return True
+    else:
+        return False
+
+
+def client_child(conn, addr):
+    #q = b'quit\r\n'
+    print(pid)
     #conn, addr = accept
     print('Client connected: {}'.format(addr))
     while True:
         data = conn.recv(1024)
-        if data == q:
+        if quit(data):
             conn.shutdown(socket.SHUT_RDWR)
             print('Client disconnected: {}'.format(addr))      
             conn.close()
             return
+        elif data == b'help\r\n':
+            conn.send(help())
         else:
             #print(data.decode('utf-8'))
             #print(data.decode('ascii'))
